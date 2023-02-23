@@ -6,7 +6,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-cover bg-hero-pattern from-orange-600 to-purple-700">
       <Navbar />
       <Herosection />
     </div>
