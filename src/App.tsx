@@ -13,53 +13,44 @@ const cards = [
     date: '27/03/2023',
     title: 'Título de la tarjeta 1',
     content: 'Contenido de la tarjeta 1',
+    img: `${process.env.PUBLIC_URL}/img/1.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
+    img: `${process.env.PUBLIC_URL}/img/2.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
+    img: `${process.env.PUBLIC_URL}/img/3.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
+    img: `${process.env.PUBLIC_URL}/img/4.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
+    img: `${process.env.PUBLIC_URL}/img/5.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
+    img: `${process.env.PUBLIC_URL}/img/1.jpg`
   },
   {
     date: '26/03/2023',
     title: 'Título de la tarjeta 2',
     content: 'Contenido de la tarjeta 2',
-  },
-  {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-  },
-  {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-  },
-  {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-  },
-  // ...más tarjetas
+    img: `${process.env.PUBLIC_URL}/img/2.jpg`
+  }
 ];
 
 function App() {

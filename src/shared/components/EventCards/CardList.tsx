@@ -3,6 +3,7 @@ import Card from "./EventCards";
 
 interface CardData {
   date: string;
+  img: string;
   title: string;
   content: string;
 }
@@ -34,6 +35,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
       return (
         <Card
           key={index}
+          img_url={card.img}
           date={card.date}
           title={card.title}
           content={card.content}
