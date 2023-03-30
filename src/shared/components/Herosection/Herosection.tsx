@@ -11,10 +11,10 @@ function Herosection() {
           role="alert"
         >
           <span className="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">
-            New
+            Más
           </span>{" "}
           <span className="text-sm font-medium">
-            Flowbite is out! See what's new
+            Información
           </span>
           <svg
             className="ml-2 w-5 h-5"
@@ -30,22 +30,21 @@ function Herosection() {
           </svg>
         </a>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-          We invest in the world’s potential
+          Kaudal Cultural Evento!
         </h1>
         <div className="flex justify-center items-center">
           {/* MM/DD/YYYY HH:mm:SS */}
           <Countdown date='01/01/2024 12:00:00' />
         </div>
         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-          Here at Flowbite we focus on markets where technology, innovation, and
-          capital can unlock long-term value and drive economic growth.
+        orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
         </p>
         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
             href="#"
             className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
           >
-            Learn more
+            Comprar Ticket
             <svg
               className="ml-2 -mr-1 w-5 h-5"
               fill="currentColor"
@@ -71,7 +70,7 @@ function Herosection() {
             >
               <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
             </svg>
-            Watch video
+            Ver Video
           </a>
         </div>
       </div>
