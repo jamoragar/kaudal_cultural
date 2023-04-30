@@ -57,9 +57,9 @@ module.exports = {
       },
       backgroundImage: {
         "hero-pattern":
-          "linear-gradient(to top left, rgba(233, 87, 29, 0.8), rgba(90, 34, 139, 0.8)), url('/src/assets/img/01bg.png')",
+          "linear-gradient(to top left, rgba(233, 87, 29, 0.8), rgba(90, 34, 139, 0.8)), url('/src/assets/img/02bg.jpeg')",
       },
     },
   },
-  plugins: [],
+  plugins: ['@tailwindcss/forms'],
 };

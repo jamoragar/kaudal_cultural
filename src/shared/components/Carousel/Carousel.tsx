@@ -1,14 +1,13 @@
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import './Carousel.css';
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./Carousel.css";
 
 interface Props {
   year: number;
   months: string[];
 }
-
 
 const Arrow = (props: any) => {
   const { className, onClick } = props;
@@ -19,7 +18,7 @@ const Arrow = (props: any) => {
       onClick={onClick}
     />
   );
-}
+};
 
 const Carousel: React.FC<Props> = ({ year, months }) => {
   const settings = {
@@ -38,8 +37,8 @@ const Carousel: React.FC<Props> = ({ year, months }) => {
           slidesToScroll: 1,
           infinite: true,
           arrows: false,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
@@ -47,10 +46,10 @@ const Carousel: React.FC<Props> = ({ year, months }) => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
-          arrows: false
-        }
-      }
-    ]
+          arrows: false,
+        },
+      },
+    ],
   };
 
   const handleClick = (month: string) => {
@@ -61,9 +60,13 @@ const Carousel: React.FC<Props> = ({ year, months }) => {
     <div className="carousel-container">
       <Slider {...settings}>
         {months.map((month, index) => (
-            <div key={index} className="carousel-item border" onClick={() => handleClick(month)}>
+          <div
+            key={index}
+            className="carousel-item border"
+            onClick={() => handleClick(month)}
+          >
             <p className="text-xl month">{month}</p>
-            <p className='text-m'>{year}</p>
+            <p className="text-m">{year}</p>
           </div>
         ))}
       </Slider>

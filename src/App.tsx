@@ -1,67 +1,104 @@
 import React from "react";
 import logo from "./logo.svg";
-import Navbar from "./shared/components/Navbar/Navbar";
-import Herosection from "./shared/components/Herosection/Herosection";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ClientsByEvent from "./pages/ClientsByEvent/ClientsByEvent";
 import Carousel from "./shared/components/Carousel/Carousel";
-import CardList from './shared/components/EventCards/CardList';
+import CardList from "./shared/components/EventCards/CardList";
 import "./App.css";
+import Eventos from "./pages/Dashboard/Eventos/Eventos";
+import Asistentes from "./pages/Dashboard/Asistentes/Asistentes";
+import PuntoVenta from "./pages/Dashboard/PuntoVenta/PuntoVenta";
+import Ventas from "./pages/Dashboard/Ventas/Ventas";
 
-
-const months = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEPT','OCT','NOV','DIC'];
+const months = [
+  "ENE",
+  "FEB",
+  "MAR",
+  "ABR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AGO",
+  "SEPT",
+  "OCT",
+  "NOV",
+  "DIC",
+];
 const cards = [
   {
-    date: '27/03/2023',
-    title: 'Título de la tarjeta 1',
-    content: 'Contenido de la tarjeta 1',
-    img: `${process.env.PUBLIC_URL}/img/1.jpg`
+    date: "18:00hrs.",
+    title: "Título de la tarjeta 1",
+    content: "https://goo.gl/maps/cg9cekFGNhYB7xQd6",
+    img: `${process.env.PUBLIC_URL}/img/1.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/2.jpg`
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content:
+      "Contenido de la tarjeta 2Contenido de la tarjeta 2Contenido de la tarjeta 2Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/2.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/3.jpg`
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content: "Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/3.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/4.jpg`
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content: "Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/4.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/5.jpg`
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content: "Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/5.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/1.jpg`
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content: "Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/1.jpg`,
   },
   {
-    date: '26/03/2023',
-    title: 'Título de la tarjeta 2',
-    content: 'Contenido de la tarjeta 2',
-    img: `${process.env.PUBLIC_URL}/img/2.jpg`
-  }
+    date: "26/03/2023",
+    title: "Título de la tarjeta 2",
+    content: "Contenido de la tarjeta 2",
+    img: `${process.env.PUBLIC_URL}/img/2.jpg`,
+  },
 ];
 
 function App() {
   return (
     <div className="App">
-      <div className="bg-cover bg-hero-pattern from-orange-600 to-purple-700">
-        <Navbar />
-        <Herosection />
-      </div>
-      <Carousel year={2023} months={months} />
-      <CardList cards={cards}/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/administracion/:uid/*" element={<Dashboard />}>
+          <Route path="" element={<Eventos />} />
+          <Route path="eventos" element={<Eventos />} />
+          <Route path="asistentes" element={<Asistentes />} />
+          <Route path="ventas" element={<Ventas />} />
+          <Route path="pos" element={<PuntoVenta />} />
+        </Route>
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
+      {/* <Carousel year={2023} months={months} />
+      <CardList cards={cards}/> */}
+    </div>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div>
+      <h2>Nada que ver por acá</h2>
+      <p>
+        <Link to="/">Ir a la página de inicio.</Link>
+      </p>
     </div>
   );
 }
