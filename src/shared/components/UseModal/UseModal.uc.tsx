@@ -1,53 +1,14 @@
-import React, { Fragment, MutableRefObject, useRef, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { IProps, useModal } from './UseModal.cb'
 import { RiAlertLine } from 'react-icons/ri'
 
-interface Props {
-  open: boolean
-  setOpen: () => void
-  cancelButtonRef: MutableRefObject<any>
-}
+const ModalEventos: React.FC<IProps> = (
+  { open, setOpen, cancelButtonRef },
+  props: IProps
+): React.ReactElement => {
+  const method = useModal(props)
 
-const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
-  const [price, setPrice] = useState({ value: '', formatedValue: '' })
-  const [codigos, setCodigos] = useState<string[]>([])
-  const [tickets, setTickets] = useState<string[]>([])
-
-  const currencyFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value
-    const valueWithRegex = value
-    value = value.replace(/\D/g, '')
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-    setPrice({ value: valueWithRegex, formatedValue: value })
-    console.log(price)
-  }
-
-  const handleAddCodigo = () => {
-    setCodigos([...codigos, ''])
-  }
-
-  const handleRemoveCodigos = (index: number) => {
-    setCodigos(codigos.filter((_, i) => i !== index))
-  }
-
-  const handleChangeCodigos = (index: number, value: string) => {
-    const newCodigos = [...codigos]
-    newCodigos[index] = value
-    setCodigos(newCodigos)
-  }
-
-  const handleChangeTickets = (index: number, value: string) => {
-    const newTickets = [...tickets]
-    newTickets[index] = value
-    setTickets(newTickets)
-  }
-  const handleAddTicket = () => {
-    setTickets([...tickets, ''])
-  }
-
-  const handleRemoveTickets = (index: number) => {
-    setTickets(tickets.filter((_, i) => i !== index))
-  }
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -244,7 +205,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                           </div>
                         </div>
 
-                        <div className="sm:col-span-3">
+                        <div className="sm:col-span-2">
                           <label
                             htmlFor="region"
                             className="block text-sm font-medium leading-6 text-gray-900"
@@ -289,70 +250,28 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                               type="text"
                               name="tickets-types"
                               id="tickets-types"
-                              value={price.formatedValue}
-                              onChange={(e) => currencyFormat(e)}
+                              value={method.price.formatedValue}
+                              onChange={(e) => method.currencyFormat(e)}
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
-
-                        {/* <div className="sm:col-span-2">
-                          <label
-                            htmlFor="price"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Precio ($)
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              type="text"
-                              name="price"
-                              id="price"
-                              value={price.formatedValue}
-                              onChange={(e) => currencyFormat(e)}
-                              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            />
-                          </div>
-                        </div>
-                        <div className="sm:col-span-2">
-                          <label
-                            htmlFor="discount"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Descuento (%)
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              type="number"
-                              name="discount"
-                              id="discount"
-                              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            />
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => handleAddCodigo()}
+                      onClick={() => method.handleAddCodigo()}
                       className="my-8 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
                       Agregar Código
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAddTicket()}
-                      className="my-8 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                    >
-                      Tipo de Ticket
-                    </button>
                   </div>
-                  {codigos.map((input, index) => (
+                  {method.codigos.map((input, index) => (
                     <div
                       key={index}
-                      className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-7"
+                      className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-7"
                     >
                       <div className="sm:col-span-4">
                         <label
@@ -369,7 +288,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                             value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
-                              handleChangeCodigos(index, e.target.value)
+                              method.handleChangeCodigos(index, e.target.value)
                             }
                           />
                         </div>
@@ -389,7 +308,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                             value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
-                              handleChangeCodigos(index, e.target.value)
+                              method.handleChangeCodigos(index, e.target.value)
                             }
                           />
                         </div>
@@ -397,7 +316,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                       <div className="mt-8 sm:col-span-1">
                         <button
                           type="button"
-                          onClick={() => handleRemoveCodigos(index)}
+                          onClick={() => method.handleRemoveCodigos(index)}
                           className="mb-2 rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           -
@@ -405,10 +324,19 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                       </div>
                     </div>
                   ))}
-                  {tickets.map((input, index) => (
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => method.handleAddTicket()}
+                      className="my-8 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    >
+                      Tipo de Ticket
+                    </button>
+                  </div>
+                  {method.tickets.map((input, index) => (
                     <div
                       key={index}
-                      className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-7"
+                      className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-7"
                     >
                       <div className="sm:col-span-4">
                         <label
@@ -425,7 +353,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                             value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
-                              handleChangeTickets(index, e.target.value)
+                              method.handleChangeTickets(index, e.target.value)
                             }
                           />
                         </div>
@@ -445,7 +373,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                             value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
-                              handleChangeTickets(index, e.target.value)
+                              method.handleChangeTickets(index, e.target.value)
                             }
                           />
                         </div>
@@ -453,7 +381,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                       <div className="mt-8 sm:col-span-1">
                         <button
                           type="button"
-                          onClick={() => handleRemoveTickets(index)}
+                          onClick={() => method.handleRemoveTickets(index)}
                           className="mb-2 rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           -
@@ -472,6 +400,7 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
                     </button>
                     <button
                       type="button"
+                      onClick={method.handleSubmit(method.handleOnCrearEvento)}
                       className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
                     >
                       Crear Evento!
@@ -487,4 +416,4 @@ const UseModal: React.FC<Props> = ({ open, setOpen, cancelButtonRef }): any => {
   )
 }
 
-export default UseModal
+export default ModalEventos

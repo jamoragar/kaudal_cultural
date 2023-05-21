@@ -9,7 +9,7 @@ import {
   RiMapPinRangeLine,
   RiDropboxLine,
 } from 'react-icons/ri'
-import UseModal from '../../../shared/components/UseModal/UseModal'
+import ModalEventos from '../../../shared/components/UseModal/UseModal.uc'
 
 const Eventos = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -231,7 +231,7 @@ const Eventos = () => {
         </div>
       </a>
       {/* Implementar Formulario reactivo con codigo de influencer y % de decto */}
-      <UseModal
+      <ModalEventos
         open={isModalOpen}
         setOpen={handleCloseModal}
         cancelButtonRef={cancelButtonRef}
