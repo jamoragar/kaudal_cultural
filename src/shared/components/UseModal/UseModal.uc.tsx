@@ -52,7 +52,18 @@ const ModalEventos: React.FC<IProps> = (
                           >
                             Foto de Portada
                           </label>
-                          <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                          <div className="mt-2 flex flex-col items-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                            <div className="mb-4">
+                              <img
+                                className="max-w-sm"
+                                src={
+                                  method.preview === null
+                                    ? ''
+                                    : URL.createObjectURL(method.preview)
+                                }
+                                alt=""
+                              />
+                            </div>
                             <div className="text-center">
                               <div className="mt-4 flex text-sm leading-6 text-gray-600">
                                 <label
@@ -62,9 +73,10 @@ const ModalEventos: React.FC<IProps> = (
                                   <span>Subir archivo</span>
                                   <input
                                     id="file-upload"
-                                    name="file-upload"
                                     type="file"
                                     className="sr-only"
+                                    {...method.register('ImagenPortada')}
+                                    onChange={method.handlePreview}
                                   />
                                 </label>
                                 <p className="pl-1">o suelte acá la imagen</p>
@@ -94,9 +106,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="text"
-                              name="event-name"
                               id="event-name"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('EventName')}
                             />
                           </div>
                         </div>
@@ -111,9 +123,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="text"
-                              name="summary"
                               id="summary"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('Sumary')}
                             />
                           </div>
                         </div>
@@ -128,9 +140,11 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="date"
-                              name="start-date"
                               id="start-date"
+                              value={method.startDateInput}
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('StartDate')}
+                              onChange={method.handleStartDateInput}
                             />
                           </div>
                         </div>
@@ -145,10 +159,13 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="date"
-                              name="end-date"
                               id="end-date"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('EndDate')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.EndDate?.message}
+                            </span>
                           </div>
                         </div>
                         <div className="col-span-full">
@@ -161,10 +178,10 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <textarea
                               id="about"
-                              name="about"
                               rows={3}
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               defaultValue={''}
+                              {...method.register('Description')}
                             />
                           </div>
                           <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -181,9 +198,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="text"
-                              name="address"
                               id="address"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('Address')}
                             />
                           </div>
                         </div>
@@ -198,9 +215,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="text"
-                              name="city"
                               id="city"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('City')}
                             />
                           </div>
                         </div>
@@ -215,9 +232,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="text"
-                              name="region"
                               id="region"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('Region')}
                             />
                           </div>
                         </div>
@@ -231,9 +248,9 @@ const ModalEventos: React.FC<IProps> = (
                           <div className="mt-2">
                             <input
                               type="number"
-                              name="capacity"
                               id="capacity"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                              {...method.register('FullCapacity')}
                             />
                           </div>
                         </div>
@@ -283,10 +300,9 @@ const ModalEventos: React.FC<IProps> = (
                         <div className="mt-2">
                           <input
                             type="text"
-                            name="code-name"
                             id="code-name"
-                            value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                            {...method.register('InfluencerCode')}
                             onChange={(e) =>
                               method.handleChangeCodigos(index, e.target.value)
                             }
@@ -303,10 +319,9 @@ const ModalEventos: React.FC<IProps> = (
                         <div className="mt-2">
                           <input
                             type="text"
-                            name="code-discount"
                             id="code-discount"
-                            value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                            {...method.register('InfluencerDiscount')}
                             onChange={(e) =>
                               method.handleChangeCodigos(index, e.target.value)
                             }
@@ -350,7 +365,6 @@ const ModalEventos: React.FC<IProps> = (
                             type="text"
                             name="ticket-type"
                             id="ticket-type"
-                            value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
                               method.handleChangeTickets(index, e.target.value)
@@ -370,7 +384,6 @@ const ModalEventos: React.FC<IProps> = (
                             type="text"
                             name="ticket-numbers"
                             id="ticket-numbers"
-                            value={input}
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                             onChange={(e) =>
                               method.handleChangeTickets(index, e.target.value)

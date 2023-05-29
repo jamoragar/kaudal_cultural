@@ -11,9 +11,12 @@ export interface IProps {
 }
 
 export const useModal = (props: IProps) => {
+  const today = new Date().toISOString().substr(0, 10) // Obtener la fecha actual en formato "YYYY-MM-DD"
   const [price, setPrice] = useState({ value: '', formatedValue: '' })
   const [codigos, setCodigos] = useState<string[]>([])
   const [tickets, setTickets] = useState<string[]>([])
+  const [preview, setPreview] = useState<File | null>(null)
+  const [startDateInput, setStartDateInput] = useState<string>(today)
 
   const {
     register,
@@ -28,7 +31,10 @@ export const useModal = (props: IProps) => {
     value = value.replace(/\D/g, '')
     value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
     setPrice({ value: valueWithRegex, formatedValue: value })
-    console.log(price)
+  }
+
+  const handleStartDateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDateInput(event.target.value)
   }
 
   const handleAddCodigo = () => {
@@ -60,7 +66,14 @@ export const useModal = (props: IProps) => {
 
   // Obtener paremtros del formulario de Creación de evento.
   const handleOnCrearEvento = (data: any) => {
+    data.EndDate = data.EndDate.toLocaleDateString()
     console.log(data)
+  }
+
+  // Previsualizar la imagen que se esta subiendo
+  const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    setPreview(e.target.files[0])
   }
 
   return {
@@ -71,12 +84,16 @@ export const useModal = (props: IProps) => {
     handleChangeTickets,
     handleAddTicket,
     handleRemoveTickets,
+    handleStartDateInput,
+    startDateInput,
     price,
     codigos,
     tickets,
+    preview,
     errors,
     register,
     handleSubmit,
     handleOnCrearEvento,
+    handlePreview,
   }
 }
