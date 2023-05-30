@@ -1,5 +1,5 @@
 import { MutableRefObject, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { InferType } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { crearEventoSchema } from '../../validations/crearEventoValidation'
@@ -10,20 +10,38 @@ export interface IProps {
   cancelButtonRef: MutableRefObject<any>
 }
 
+export interface CodesProps {
+  InfluencerCode: string
+  InfluencerDiscount: number
+}
+
 export const useModal = (props: IProps) => {
   const today = new Date().toISOString().substr(0, 10) // Obtener la fecha actual en formato "YYYY-MM-DD"
   const [price, setPrice] = useState({ value: '', formatedValue: '' })
-  const [codigos, setCodigos] = useState<string[]>([])
+  const [codigos, setCodigos] = useState([])
   const [tickets, setTickets] = useState<string[]>([])
   const [preview, setPreview] = useState<File | null>(null)
   const [startDateInput, setStartDateInput] = useState<string>(today)
 
+  const defaultCodigosValues: CodesProps = {
+    InfluencerCode: '',
+    InfluencerDiscount: 0,
+  }
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Props>({ resolver: yupResolver(crearEventoSchema) })
+    getValues,
+  } = useForm<Props>({
+    resolver: yupResolver(crearEventoSchema),
+  })
   type Props = InferType<typeof crearEventoSchema>
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'Codes',
+  })
 
   const currencyFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value
@@ -38,17 +56,19 @@ export const useModal = (props: IProps) => {
   }
 
   const handleAddCodigo = () => {
-    setCodigos([...codigos, ''])
+    setCodigos([...codigos, defaultCodigosValues])
   }
 
   const handleRemoveCodigos = (index: number) => {
+    const { Codes } = getValues()
+    console.log(Codes)
     setCodigos(codigos.filter((_, i) => i !== index))
   }
 
   const handleChangeCodigos = (index: number, value: string) => {
-    const newCodigos = [...codigos]
-    newCodigos[index] = value
-    setCodigos(newCodigos)
+    // const newCodigos = [...codigos]
+    // newCodigos[index] = value
+    // setCodigos(newCodigos)
   }
 
   const handleChangeTickets = (index: number, value: string) => {
@@ -67,6 +87,7 @@ export const useModal = (props: IProps) => {
   // Obtener paremtros del formulario de Creación de evento.
   const handleOnCrearEvento = (data: any) => {
     data.EndDate = data.EndDate.toLocaleDateString()
+    data.StartDate = data.StartDate.toLocaleDateString()
     console.log(data)
   }
 
@@ -91,9 +112,14 @@ export const useModal = (props: IProps) => {
     tickets,
     preview,
     errors,
+    fields,
+    control,
+    append,
+    remove,
     register,
     handleSubmit,
     handleOnCrearEvento,
     handlePreview,
+    Controller,
   }
 }

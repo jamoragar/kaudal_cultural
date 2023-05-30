@@ -279,15 +279,15 @@ const ModalEventos: React.FC<IProps> = (
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => method.handleAddCodigo()}
+                      onClick={() => method.append({})}
                       className="my-8 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
                       Agregar Código
                     </button>
                   </div>
-                  {method.codigos.map((input, index) => (
+                  {method.fields.map((field, index) => (
                     <div
-                      key={index}
+                      key={field.id}
                       className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-7"
                     >
                       <div className="sm:col-span-4">
@@ -295,20 +295,33 @@ const ModalEventos: React.FC<IProps> = (
                           htmlFor="code-name"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
-                          Nombre de Código
+                          Nombre de Código {index + 1}
                         </label>
                         <div className="mt-2">
-                          <input
-                            type="text"
-                            id="code-name"
-                            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            {...method.register('InfluencerCode')}
-                            onChange={(e) =>
-                              method.handleChangeCodigos(index, e.target.value)
-                            }
+                          <method.Controller
+                            control={method.control}
+                            name={`Codes.${index}.InfluencerCode`}
+                            defaultValue=""
+                            render={({ field }) => (
+                              <input
+                                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                                {...field}
+                              />
+                            )}
                           />
+                          {method.errors.Codes &&
+                            method.errors.Codes[index] &&
+                            method.errors.Codes[index].InfluencerCode && (
+                              <span className="text-xs italic text-red-500">
+                                {
+                                  method.errors.Codes[index].InfluencerCode
+                                    .message
+                                }
+                              </span>
+                            )}
                         </div>
                       </div>
+
                       <div className="sm:col-span-2">
                         <label
                           htmlFor="code-discount"
@@ -317,21 +330,42 @@ const ModalEventos: React.FC<IProps> = (
                           % de Descuento
                         </label>
                         <div className="mt-2">
-                          <input
+                          <method.Controller
+                            control={method.control}
+                            name={`Codes.${index}.InfluencerDiscount`}
+                            defaultValue={0}
+                            render={({ field }) => (
+                              <input
+                                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                                {...field}
+                              />
+                            )}
+                          />
+                          {method.errors.Codes &&
+                            method.errors.Codes[index] &&
+                            method.errors.Codes[index].InfluencerDiscount && (
+                              <span className="text-xs italic text-red-500">
+                                {
+                                  method.errors.Codes[index].InfluencerDiscount
+                                    .message
+                                }
+                              </span>
+                            )}
+
+                          {/* <input
                             type="text"
                             id="code-discount"
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            {...method.register('InfluencerDiscount')}
                             onChange={(e) =>
                               method.handleChangeCodigos(index, e.target.value)
                             }
-                          />
+                          /> */}
                         </div>
                       </div>
                       <div className="mt-8 sm:col-span-1">
                         <button
                           type="button"
-                          onClick={() => method.handleRemoveCodigos(index)}
+                          onClick={() => method.remove(index)}
                           className="mb-2 rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           -
@@ -339,6 +373,23 @@ const ModalEventos: React.FC<IProps> = (
                       </div>
                     </div>
                   ))}
+
+                  {/* {method.codigos.map((input, index) => {
+                    const fieldName = method.codigos[index]
+                    return (
+                      
+                        
+                          
+                          
+                        
+                        <div className="sm:col-span-2">
+                          
+                          
+                        </div>
+                        
+                      
+                    )
+                  })} */}
                   <div className="flex gap-4">
                     <button
                       type="button"
