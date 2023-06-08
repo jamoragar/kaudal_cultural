@@ -1,19 +1,21 @@
-import React from "react";
-import Form from "../Form/Form";
+import React from 'react'
+import Form from '../Form/Form'
 
 interface ModalProps {
-  isVisible: boolean;
-  onClose: () => void;
+  content: any
+  isVisible: boolean
+  onClose: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
-  if (!isVisible) return null;
+const Modal: React.FC<ModalProps> = ({ content, isVisible, onClose }) => {
+  console.log(content)
+  if (!isVisible) return null
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
-      <div className="flex flex-col w-4/5 h-full overflow-x-hidden overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm">
+      <div className="flex h-full w-4/5 flex-col overflow-y-auto overflow-x-hidden">
         <button
           onClick={() => onClose()}
-          className="text-white text-xl place-self-end"
+          className="place-self-end text-xl text-white"
         >
           X
         </button>
@@ -26,39 +28,35 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
                     <div>
                       <span className="text-4xl">Información del Evento</span>
                     </div>
-                    <div className="mt-8 text-justify-center">
-                      <span className="text-2xl">
-                        "TRIBUTO CIRCO Vol. 1 - Charly García" <br />
-                        Evento privado.
-                      </span>
+                    <div className="text-justify-center mt-8">
+                      <span className="text-2xl">{content.title}</span>
                       <ul className="mt-4">
-                        <li className="text-left py-2">
+                        <li className="py-2 text-left">
                           <span className="font-medium">Descripción: </span>
-                          Espectáculo escénico que reúne la música en vivo de
-                          Piso 9 y el talento de lxs artistas circenses de Circo
-                          del Sur.
+                          {content.content}
                         </li>
-                        <li className="text-left py-2">
-                          <span className="font-medium">Fecha: </span>Sábado 01
-                          de Abril.
+                        <li className="py-2 text-left">
+                          <span className="font-medium">Fecha: </span>
+                          {content.date}
                         </li>
-                        <li className="text-left py-2">
-                          <span className="font-medium">Hora: </span>20.00hrs.
+                        <li className="py-2 text-left">
+                          <span className="font-medium">Hora: </span>
+                          {`${content.time}hrs.`}
                         </li>
-                        <li className="text-left py-2">
+                        <li className="py-2 text-left">
                           <span className="font-medium">Ubicación: </span>
                           O’Higgins #655 (Espacio de Artes Escénicas Circo del
                           Sur).
                         </li>
-                        <li className="text-left py-2">
+                        <li className="py-2 text-left">
                           <span className="font-medium">Tipo de Entrada: </span>
-                          No aplica.
+                          General
                         </li>
-                        <li className="text-left py-2">
+                        <li className="py-2 text-left">
                           <span className="font-medium">
-                            Valor del Ticket:{" "}
+                            Valor del Ticket:{' '}
                           </span>
-                          $0
+                          $2.000
                         </li>
                         {/* <li className="text-left py-2">
                           <span className="font-medium">Categoría: </span>Música
@@ -83,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

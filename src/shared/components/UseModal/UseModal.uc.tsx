@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IProps, useModal } from './UseModal.cb'
-import { RiAlertLine } from 'react-icons/ri'
+import { SpinnerComponent } from '../icons/Spinner'
 
 const ModalEventos: React.FC<IProps> = (
   { open, setOpen, cancelButtonRef },
@@ -41,7 +41,10 @@ const ModalEventos: React.FC<IProps> = (
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-                <form className="p-4">
+                <form
+                  className="p-4"
+                  onSubmit={method.handleSubmit(method.handleOnCrearEvento)}
+                >
                   <div className="space-y-12">
                     <div>
                       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -110,6 +113,9 @@ const ModalEventos: React.FC<IProps> = (
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('EventName')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.EventName?.message}
+                            </span>
                           </div>
                         </div>
 
@@ -127,6 +133,9 @@ const ModalEventos: React.FC<IProps> = (
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('Sumary')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.Sumary?.message}
+                            </span>
                           </div>
                         </div>
 
@@ -139,13 +148,16 @@ const ModalEventos: React.FC<IProps> = (
                           </label>
                           <div className="mt-2">
                             <input
-                              type="date"
+                              type="datetime-local"
                               id="start-date"
                               value={method.startDateInput}
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('StartDate')}
                               onChange={method.handleStartDateInput}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.StartDate?.message}
+                            </span>
                           </div>
                         </div>
 
@@ -158,7 +170,7 @@ const ModalEventos: React.FC<IProps> = (
                           </label>
                           <div className="mt-2">
                             <input
-                              type="date"
+                              type="datetime-local"
                               id="end-date"
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('EndDate')}
@@ -183,6 +195,9 @@ const ModalEventos: React.FC<IProps> = (
                               defaultValue={''}
                               {...method.register('Description')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.Description?.message}
+                            </span>
                           </div>
                           <p className="mt-3 text-sm leading-6 text-gray-600">
                             Escriba la descripción del evento.
@@ -202,6 +217,9 @@ const ModalEventos: React.FC<IProps> = (
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('Address')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.Address?.message}
+                            </span>
                           </div>
                         </div>
 
@@ -219,6 +237,9 @@ const ModalEventos: React.FC<IProps> = (
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('City')}
                             />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.City?.message}
+                            </span>
                           </div>
                         </div>
 
@@ -236,41 +257,9 @@ const ModalEventos: React.FC<IProps> = (
                               className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                               {...method.register('Region')}
                             />
-                          </div>
-                        </div>
-                        <div className="sm:col-span-2 sm:col-start-1">
-                          <label
-                            htmlFor="capacity"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Capacidad
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              type="number"
-                              id="capacity"
-                              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                              {...method.register('FullCapacity')}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="sm:col-span-3">
-                          <label
-                            htmlFor="tickets-types"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Precio ($)
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              type="text"
-                              name="tickets-types"
-                              id="tickets-types"
-                              value={method.price.formatedValue}
-                              onChange={(e) => method.currencyFormat(e)}
-                              className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            />
+                            <span className="text-xs italic text-red-500">
+                              {method.errors?.Region?.message}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -279,13 +268,16 @@ const ModalEventos: React.FC<IProps> = (
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => method.append({})}
+                      onClick={() => method.AddCodigo({})}
                       className="my-8 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
                       Agregar Código
                     </button>
                   </div>
-                  {method.fields.map((field, index) => (
+
+                  {/* Arreglo de códigos de influencers */}
+
+                  {method.CodigosFields.map((field, index) => (
                     <div
                       key={field.id}
                       className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-7"
@@ -351,21 +343,12 @@ const ModalEventos: React.FC<IProps> = (
                                 }
                               </span>
                             )}
-
-                          {/* <input
-                            type="text"
-                            id="code-discount"
-                            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            onChange={(e) =>
-                              method.handleChangeCodigos(index, e.target.value)
-                            }
-                          /> */}
                         </div>
                       </div>
                       <div className="mt-8 sm:col-span-1">
                         <button
                           type="button"
-                          onClick={() => method.remove(index)}
+                          onClick={() => method.RemoveCodigo(index)}
                           className="mb-2 rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           -
@@ -373,54 +356,51 @@ const ModalEventos: React.FC<IProps> = (
                       </div>
                     </div>
                   ))}
-
-                  {/* {method.codigos.map((input, index) => {
-                    const fieldName = method.codigos[index]
-                    return (
-                      
-                        
-                          
-                          
-                        
-                        <div className="sm:col-span-2">
-                          
-                          
-                        </div>
-                        
-                      
-                    )
-                  })} */}
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => method.handleAddTicket()}
+                      onClick={() => method.AddTipoTicket({})}
                       className="my-8 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                     >
                       Tipo de Ticket
                     </button>
                   </div>
-                  {method.tickets.map((input, index) => (
+
+                  {/* Arreglo de tipos de tickets, cantidades y valor */}
+                  {method.TipoTicketsFields.map((field, index) => (
                     <div
-                      key={index}
+                      key={field.id}
                       className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-7"
                     >
-                      <div className="sm:col-span-4">
+                      <div className="sm:col-span-2">
                         <label
                           htmlFor="ticket-type"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
-                          Tipo de Ticket
+                          Tipo de Ticket {index + 1}
                         </label>
                         <div className="mt-2">
-                          <input
-                            type="text"
-                            name="ticket-type"
-                            id="ticket-type"
-                            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            onChange={(e) =>
-                              method.handleChangeTickets(index, e.target.value)
-                            }
+                          <method.Controller
+                            control={method.control}
+                            name={`Tickets.${index}.TipoTicket`}
+                            defaultValue=""
+                            render={({ field }) => (
+                              <input
+                                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                                {...field}
+                              />
+                            )}
                           />
+                          {method.errors.Tickets &&
+                            method.errors.Tickets[index] &&
+                            method.errors.Tickets[index].TipoTicket && (
+                              <span className="text-xs italic text-red-500">
+                                {
+                                  method.errors.Tickets[index].TipoTicket
+                                    .message
+                                }
+                              </span>
+                            )}
                         </div>
                       </div>
                       <div className="sm:col-span-2">
@@ -431,21 +411,68 @@ const ModalEventos: React.FC<IProps> = (
                           Cantidad de Tickets
                         </label>
                         <div className="mt-2">
-                          <input
-                            type="text"
-                            name="ticket-numbers"
-                            id="ticket-numbers"
-                            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
-                            onChange={(e) =>
-                              method.handleChangeTickets(index, e.target.value)
-                            }
+                          <method.Controller
+                            control={method.control}
+                            name={`Tickets.${index}.CantidadTicketTipo`}
+                            defaultValue={0}
+                            render={({ field }) => (
+                              <input
+                                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                                {...field}
+                              />
+                            )}
                           />
+                          {method.errors.Tickets &&
+                            method.errors.Tickets[index] &&
+                            method.errors.Tickets[index].CantidadTicketTipo && (
+                              <span className="text-xs italic text-red-500">
+                                {
+                                  method.errors.Tickets[index]
+                                    .CantidadTicketTipo.message
+                                }
+                              </span>
+                            )}
+                        </div>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label
+                          htmlFor="tickets-types"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Precio ($)
+                        </label>
+                        <div className="mt-2">
+                          <method.Controller
+                            control={method.control}
+                            name={`Tickets.${index}.PrecioTicket`}
+                            defaultValue={0}
+                            render={({ field }) => (
+                              <input
+                                type="number"
+                                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(method.currencyFormat(e))
+                                }
+                              />
+                            )}
+                          />
+                          {method.errors.Tickets &&
+                            method.errors.Tickets[index] &&
+                            method.errors.Tickets[index].PrecioTicket && (
+                              <span className="text-xs italic text-red-500">
+                                {
+                                  method.errors.Tickets[index].PrecioTicket
+                                    .message
+                                }
+                              </span>
+                            )}
                         </div>
                       </div>
                       <div className="mt-8 sm:col-span-1">
                         <button
                           type="button"
-                          onClick={() => method.handleRemoveTickets(index)}
+                          onClick={() => method.RemoveTipoTicket(index)}
                           className="mb-2 rounded-xl bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                         >
                           -
@@ -463,11 +490,15 @@ const ModalEventos: React.FC<IProps> = (
                       Cancelar
                     </button>
                     <button
-                      type="button"
-                      onClick={method.handleSubmit(method.handleOnCrearEvento)}
+                      type="submit"
+                      disabled={method.isSubmitting}
                       className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
                     >
-                      Crear Evento!
+                      {method.creatingEvent ? (
+                        <SpinnerComponent />
+                      ) : (
+                        'Crear Evento'
+                      )}
                     </button>
                   </div>
                 </form>

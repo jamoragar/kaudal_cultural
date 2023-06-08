@@ -1,76 +1,16 @@
-import React from "react";
-import logo from "./logo.svg";
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import ClientsByEvent from "./pages/ClientsByEvent/ClientsByEvent";
-import Carousel from "./shared/components/Carousel/Carousel";
-import CardList from "./shared/components/EventCards/CardList";
-import "./App.css";
-import Eventos from "./pages/Dashboard/Eventos/Eventos";
-import Asistentes from "./pages/Dashboard/Asistentes/Asistentes";
-import PuntoVenta from "./pages/Dashboard/PuntoVenta/PuntoVenta";
-import Ventas from "./pages/Dashboard/Ventas/Ventas";
-
-const months = [
-  "ENE",
-  "FEB",
-  "MAR",
-  "ABR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AGO",
-  "SEPT",
-  "OCT",
-  "NOV",
-  "DIC",
-];
-const cards = [
-  {
-    date: "18:00hrs.",
-    title: "Título de la tarjeta 1",
-    content: "https://goo.gl/maps/cg9cekFGNhYB7xQd6",
-    img: `${process.env.PUBLIC_URL}/img/1.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content:
-      "Contenido de la tarjeta 2Contenido de la tarjeta 2Contenido de la tarjeta 2Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/2.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content: "Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/3.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content: "Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/4.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content: "Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/5.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content: "Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/1.jpg`,
-  },
-  {
-    date: "26/03/2023",
-    title: "Título de la tarjeta 2",
-    content: "Contenido de la tarjeta 2",
-    img: `${process.env.PUBLIC_URL}/img/2.jpg`,
-  },
-];
+import React from 'react'
+import logo from './logo.svg'
+import { Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home/Home'
+import Dashboard from './pages/Dashboard/Dashboard'
+import ClientsByEvent from './pages/ClientsByEvent/ClientsByEvent'
+import Carousel from './shared/components/Carousel/Carousel'
+import CardList from './shared/components/EventCards/CardList'
+import './App.css'
+import Eventos from './pages/Dashboard/Eventos/Eventos'
+import Asistentes from './pages/Dashboard/Asistentes/Asistentes'
+import PuntoVenta from './pages/Dashboard/PuntoVenta/PuntoVenta'
+import Ventas from './pages/Dashboard/Ventas/Ventas'
 
 function App() {
   return (
@@ -89,7 +29,7 @@ function App() {
       {/* <Carousel year={2023} months={months} />
       <CardList cards={cards}/> */}
     </div>
-  );
+  )
 }
 
 function NoMatch() {
@@ -100,7 +40,7 @@ function NoMatch() {
         <Link to="/">Ir a la página de inicio.</Link>
       </p>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

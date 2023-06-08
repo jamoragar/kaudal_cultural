@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import { InferType } from "yup";
-import axios from "axios";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { invitatinSchema } from "../../validations/InvitationValidation";
+import React, { useState } from 'react'
+import { InferType } from 'yup'
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { invitatinSchema } from '../../validations/InvitationValidation'
 
 const Form = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Props>({ resolver: yupResolver(invitatinSchema) });
-  const [buttonText, setButtonText] = useState("Enviar");
-  const [email, setEmail] = useState("");
-  const [emailConfirmed, setEmailConfirmed] = useState("");
-  const [buttonEnable, setButtonEnable] = useState(false);
-  const [status, setStatus] = useState(0);
+  } = useForm<Props>({ resolver: yupResolver(invitatinSchema) })
+  const [buttonText, setButtonText] = useState('Comprar')
+  const [email, setEmail] = useState('')
+  const [emailConfirmed, setEmailConfirmed] = useState('')
+  const [buttonEnable, setButtonEnable] = useState(false)
+  const [status, setStatus] = useState(0)
 
-  type Props = InferType<typeof invitatinSchema>;
+  type Props = InferType<typeof invitatinSchema>
 
   const formSubmit = (values: Props) => {
-    setButtonEnable(true);
-    setButtonText("Registrando asistencia...");
-    axios.post("https://api.kaudalcultural.cl/clients", values).then((res) => {
-      setStatus(res.status);
-      setButtonText("Registrado!");
-    });
+    setButtonEnable(true)
+    setButtonText('Registrando asistencia...')
+    axios.post('https://api.kaudalcultural.cl/clients', values).then((res) => {
+      setStatus(res.status)
+      setButtonText('Registrado!')
+    })
     // e.preventDefault();
     // const target = e.target;
     // let data = {
@@ -35,7 +35,7 @@ const Form = () => {
     //   confirmEmail: target.confirmEmail.value,
     //   cellPhone: target.cellPhone.value,
     // };
-  };
+  }
 
   return (
     <>
@@ -51,7 +51,7 @@ const Form = () => {
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:bg-white focus:outline-none"
               id="grid-first-name"
-              {...register("names")}
+              {...register('names')}
               type="text"
               placeholder="Ingrese sus nombres"
             />
@@ -69,7 +69,7 @@ const Form = () => {
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="grid-last-name"
-              {...register("lastNames")}
+              {...register('lastNames')}
               type="text"
               placeholder="Ingrese sus apellidos"
             />
@@ -89,7 +89,7 @@ const Form = () => {
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="grid-email"
-              {...register("email")}
+              {...register('email')}
               value={email}
               type="text"
               placeholder="Ingrese su correo electrónico"
@@ -111,7 +111,7 @@ const Form = () => {
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="grid-email"
-              {...register("confirmEmail")}
+              {...register('confirmEmail')}
               type="text"
               value={emailConfirmed}
               placeholder="Reingrese su correo electrónico"
@@ -134,7 +134,7 @@ const Form = () => {
             <input
               className="mb-3 block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="grid-number"
-              {...register("cellPhone")}
+              {...register('cellPhone')}
               type="text"
               placeholder="Ingrese su número celular"
             />
@@ -154,7 +154,7 @@ const Form = () => {
             <input
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="grid-tickets"
-              {...register("numberOfTickets")}
+              {...register('numberOfTickets')}
               type="number"
               placeholder="Cuantos tickets necesita?"
             />
@@ -174,11 +174,11 @@ const Form = () => {
       </form>
       <span className="mt-2 text-lg italic text-green-600">
         {status === 201
-          ? "Asistencia registrada con éxito. Los tickets se han enviado al e-mail ingresado."
+          ? 'Asistencia registrada con éxito. Los tickets se han enviado al e-mail ingresado.'
           : null}
       </span>
     </>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

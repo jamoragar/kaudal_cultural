@@ -1,8 +1,14 @@
 import { MutableRefObject, useState } from 'react'
-import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import {
+  useForm,
+  useFieldArray,
+  Controller,
+  useFormState,
+} from 'react-hook-form'
 import { InferType } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { crearEventoSchema } from '../../validations/crearEventoValidation'
+import axios from 'axios'
 
 export interface IProps {
   open: boolean
@@ -15,13 +21,18 @@ export interface CodesProps {
   InfluencerDiscount: number
 }
 
+type Props = InferType<typeof crearEventoSchema>
+
 export const useModal = (props: IProps) => {
-  const today = new Date().toISOString().substr(0, 10) // Obtener la fecha actual en formato "YYYY-MM-DD"
-  const [price, setPrice] = useState({ value: '', formatedValue: '' })
+  let today = new Date()
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset()) // Obtener la fecha actual en formato "YYYY-MM-DD"
   const [codigos, setCodigos] = useState([])
   const [tickets, setTickets] = useState<string[]>([])
   const [preview, setPreview] = useState<File | null>(null)
-  const [startDateInput, setStartDateInput] = useState<string>(today)
+  const [startDateInput, setStartDateInput] = useState<string>(
+    today.toISOString().slice(0, 16)
+  )
+  const [creatingEvent, setCreatingEvent] = useState<boolean>(false)
 
   const defaultCodigosValues: CodesProps = {
     InfluencerCode: '',
@@ -32,25 +43,39 @@ export const useModal = (props: IProps) => {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     getValues,
+    reset,
   } = useForm<Props>({
     resolver: yupResolver(crearEventoSchema),
   })
-  type Props = InferType<typeof crearEventoSchema>
-  const { fields, append, remove } = useFieldArray({
+  // Definimos el formulario dinamico de Códigos de Influencers
+  const {
+    fields: CodigosFields,
+    append: AddCodigo,
+    remove: RemoveCodigo,
+  } = useFieldArray({
     control,
     name: 'Codes',
   })
 
+  // Definimos el formulario dinámico de Tipos de Tickets
+  const {
+    fields: TipoTicketsFields,
+    append: AddTipoTicket,
+    remove: RemoveTipoTicket,
+  } = useFieldArray({
+    control,
+    name: 'Tickets',
+  })
+
   const currencyFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value
-    const valueWithRegex = value
     value = value.replace(/\D/g, '')
     value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-    setPrice({ value: valueWithRegex, formatedValue: value })
+    return value
   }
-
+  // Con esta función inicialiamos la fecha del día de hoy para ser mostrada en el input StartDate
   const handleStartDateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStartDateInput(event.target.value)
   }
@@ -63,12 +88,6 @@ export const useModal = (props: IProps) => {
     const { Codes } = getValues()
     console.log(Codes)
     setCodigos(codigos.filter((_, i) => i !== index))
-  }
-
-  const handleChangeCodigos = (index: number, value: string) => {
-    // const newCodigos = [...codigos]
-    // newCodigos[index] = value
-    // setCodigos(newCodigos)
   }
 
   const handleChangeTickets = (index: number, value: string) => {
@@ -84,42 +103,60 @@ export const useModal = (props: IProps) => {
     setTickets(tickets.filter((_, i) => i !== index))
   }
 
-  // Obtener paremtros del formulario de Creación de evento.
-  const handleOnCrearEvento = (data: any) => {
-    data.EndDate = data.EndDate.toLocaleDateString()
-    data.StartDate = data.StartDate.toLocaleDateString()
-    console.log(data)
-  }
-
   // Previsualizar la imagen que se esta subiendo
   const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     setPreview(e.target.files[0])
   }
 
+  // Obtener paremtros del formulario de Creación de evento.
+  const handleOnCrearEvento = async (
+    data: any,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    e.preventDefault()
+    data.EndDate = data.EndDate.toISOString()
+    data.StartDate = data.StartDate.toISOString()
+    console.log(data)
+
+    setCreatingEvent(true)
+    console.log('Creando evento...')
+
+    await axios.post('http://localhost:3000/events', data).then((res) => {
+      console.log(res.data)
+      setCreatingEvent(false)
+    })
+    setCreatingEvent(false)
+
+    // reset()
+  }
+
   return {
     currencyFormat,
     handleAddCodigo,
     handleRemoveCodigos,
-    handleChangeCodigos,
     handleChangeTickets,
     handleAddTicket,
     handleRemoveTickets,
     handleStartDateInput,
     startDateInput,
-    price,
     codigos,
     tickets,
     preview,
     errors,
-    fields,
+    isSubmitting,
     control,
-    append,
-    remove,
+    CodigosFields,
+    AddCodigo,
+    RemoveCodigo,
+    TipoTicketsFields,
+    AddTipoTicket,
+    RemoveTipoTicket,
     register,
     handleSubmit,
     handleOnCrearEvento,
     handlePreview,
     Controller,
+    creatingEvent,
   }
 }
