@@ -2,7 +2,7 @@ import * as yup from 'yup'
 
 export const crearEventoSchema = yup.object().shape({
   // Nombres de entradas
-  ImagenPortada: yup.mixed().required('La imagen de portada es requerida.'),
+  Imagenes: yup.mixed().required('La imagen de portada es requerida.'),
   EventName: yup.string().required('Debe ingresar el nombre del evento.'),
   Sumary: yup.string().required('Debe ingresar una reseña del evento.'),
   StartDate: yup.date().required('Debe ingresar una fecha de inicio.'),
@@ -24,6 +24,10 @@ export const crearEventoSchema = yup.object().shape({
     .string()
     .required('Debe ingresar una descripción del evento.')
     .max(300, 'La descripción no debe superar los 300 caracteres.'),
+  Categories: yup
+    .array()
+    .min(1, 'Seleccione al menos una categoría')
+    .required('Es requerido seleccionar al menos'),
   Address: yup.string().required('Debe ingresar la dirección del evento.'),
   City: yup
     .string()

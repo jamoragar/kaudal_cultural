@@ -1,13 +1,9 @@
 import { MutableRefObject, useState } from 'react'
-import {
-  useForm,
-  useFieldArray,
-  Controller,
-  useFormState,
-} from 'react-hook-form'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { InferType } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { crearEventoSchema } from '../../validations/crearEventoValidation'
+import Swal from 'sweetalert2'
 import axios from 'axios'
 
 export interface IProps {
@@ -20,6 +16,11 @@ export interface CodesProps {
   InfluencerCode: string
   InfluencerDiscount: number
 }
+interface ImagePreview {
+  id: number
+  image: File
+  previewURL: string
+}
 
 type Props = InferType<typeof crearEventoSchema>
 
@@ -28,7 +29,8 @@ export const useModal = (props: IProps) => {
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset()) // Obtener la fecha actual en formato "YYYY-MM-DD"
   const [codigos, setCodigos] = useState([])
   const [tickets, setTickets] = useState<string[]>([])
-  const [preview, setPreview] = useState<File | null>(null)
+  const [images, setImages] = useState<ImagePreview[]>([])
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [startDateInput, setStartDateInput] = useState<string>(
     today.toISOString().slice(0, 16)
   )
@@ -39,6 +41,16 @@ export const useModal = (props: IProps) => {
     InfluencerDiscount: 0,
   }
 
+  const tagsCategories = [
+    'Teatro',
+    'Cine',
+    'Danza',
+    'Comedia',
+    'Circo',
+    'Poesía',
+    'Música',
+  ]
+
   const {
     control,
     register,
@@ -48,6 +60,9 @@ export const useModal = (props: IProps) => {
     reset,
   } = useForm<Props>({
     resolver: yupResolver(crearEventoSchema),
+    defaultValues: {
+      Categories: [],
+    },
   })
   // Definimos el formulario dinamico de Códigos de Influencers
   const {
@@ -104,11 +119,66 @@ export const useModal = (props: IProps) => {
   }
 
   // Previsualizar la imagen que se esta subiendo
-  const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return
-    setPreview(e.target.files[0])
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      const newImages: ImagePreview[] = []
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const previewURL = URL.createObjectURL(file)
+        const id = Date.now() + i
+
+        newImages.push({ id, image: file, previewURL })
+      }
+
+      setImages((prevImages) => [...prevImages, ...newImages])
+    }
+  }
+  const handleRemoveImage = (id: number) => {
+    const updatedImages = images.filter((image) => image.id !== id)
+    setImages([...updatedImages])
+  }
+  const handleDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    index: number
+  ) => {
+    event.dataTransfer.setData('text/plain', String(index))
+    setDraggedIndex(index)
   }
 
+  const handleDragOver = (
+    event: React.DragEvent<HTMLDivElement>,
+    index: number
+  ) => {
+    event.preventDefault()
+
+    if (draggedIndex === null) {
+      return
+    }
+
+    const updatedImages = [...images]
+    const draggedImage = updatedImages[draggedIndex]
+
+    updatedImages.splice(draggedIndex, 1)
+    updatedImages.splice(index, 0, draggedImage)
+
+    setImages(updatedImages)
+    setDraggedIndex(index)
+  }
+
+  const handleDrop = () => {
+    setDraggedIndex(null)
+  }
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton:
+        'rounded-md bg-green-600 px-3 py-2 font-semibold text-white shadow-sm hover:bg-green-500 mr-2',
+      cancelButton:
+        'rounded-md bg-red-600 px-3 py-2 font-semibold text-white shadow-sm hover:bg-red-500 ml-2',
+    },
+    buttonsStyling: false,
+  })
   // Obtener paremtros del formulario de Creación de evento.
   const handleOnCrearEvento = async (
     data: any,
@@ -117,16 +187,47 @@ export const useModal = (props: IProps) => {
     e.preventDefault()
     data.EndDate = data.EndDate.toISOString()
     data.StartDate = data.StartDate.toISOString()
-    console.log(data)
+    const imageFileList = images.map((image) => image.image)
+    data.Imagenes = imageFileList
+    if (data.Tickets.length === 0) {
+      swalWithBootstrapButtons
+        .fire({
+          title: 'Desea crear el evento sin tickets?',
+          text: 'Se creara un evento sin tipos de tickets ni precios, por ende se entenderá que el evento es de entrada liberada.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, crear evento!',
+          cancelButtonText: 'No, lo voy a corregir',
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            console.log(data)
+            swalWithBootstrapButtons.fire(
+              'Evento creado!',
+              'El evento ha sido creado con éxito.',
+              'success'
+            )
+          }
+        })
+    } else {
+      console.log(data)
+      Swal.fire({
+        title: 'Evento creado!',
+        text: 'El evento ha sido creado con éxito.',
+        icon: 'success',
+      })
+    }
 
-    setCreatingEvent(true)
-    console.log('Creando evento...')
+    // setCreatingEvent(true)
+    // console.log('Creando evento...')
 
-    await axios.post('http://localhost:3000/events', data).then((res) => {
-      console.log(res.data)
-      setCreatingEvent(false)
-    })
-    setCreatingEvent(false)
+    // await axios.post('http://localhost:3000/events', data).then((res) => {
+    //   console.log(res.data)
+    //   setCreatingEvent(false)
+    // })
+    // setCreatingEvent(false)
 
     // reset()
   }
@@ -142,7 +243,7 @@ export const useModal = (props: IProps) => {
     startDateInput,
     codigos,
     tickets,
-    preview,
+    images,
     errors,
     isSubmitting,
     control,
@@ -155,8 +256,14 @@ export const useModal = (props: IProps) => {
     register,
     handleSubmit,
     handleOnCrearEvento,
-    handlePreview,
+    handleFileChange,
+    handleRemoveImage,
     Controller,
     creatingEvent,
+    tagsCategories,
+    handleDragStart,
+    handleDragOver,
+    handleDrop,
+    draggedIndex,
   }
 }

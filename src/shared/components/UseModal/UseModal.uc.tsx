@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IProps, useModal } from './UseModal.cb'
 import { SpinnerComponent } from '../icons/Spinner'
+import TagsInputComponent from '../TagsInput/TagsInput.uc'
 
 const ModalEventos: React.FC<IProps> = (
   { open, setOpen, cancelButtonRef },
@@ -56,8 +57,41 @@ const ModalEventos: React.FC<IProps> = (
                             Foto de Portada
                           </label>
                           <div className="mt-2 flex flex-col items-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                            <div className="mb-4">
-                              <img
+                            <div className="mb-4 grid grid-cols-3 gap-4">
+                              {method.images.map((image, index) => (
+                                <div
+                                  key={image.id}
+                                  className={`relative overflow-hidden rounded-md
+                                  ${
+                                    method.draggedIndex === index
+                                      ? 'opacity-50'
+                                      : ''
+                                  } transition-opacity duration-200`}
+                                  draggable
+                                  onDragStart={(event) =>
+                                    method.handleDragStart(event, index)
+                                  }
+                                  onDragOver={(event) =>
+                                    method.handleDragOver(event, index)
+                                  }
+                                  onDragEnd={method.handleDrop}
+                                >
+                                  <button
+                                    className="absolute top-2 right-2 z-10 rounded bg-red-500 p-1 text-white"
+                                    onClick={() =>
+                                      method.handleRemoveImage(image.id)
+                                    }
+                                  >
+                                    Eliminar
+                                  </button>
+                                  <img
+                                    src={image.previewURL}
+                                    alt="Preview"
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                              {/* <img
                                 className="max-w-sm"
                                 src={
                                   method.preview === null
@@ -66,6 +100,16 @@ const ModalEventos: React.FC<IProps> = (
                                 }
                                 alt=""
                               />
+                              {method.preview === null ? (
+                                <></>
+                              ) : (
+                                <button
+                                  className="absolute top-0 right-0 rounded-full bg-red-500 p-2 text-white"
+                                  onClick={() => console.log('asd')}
+                                >
+                                  X
+                                </button>
+                              )} */}
                             </div>
                             <div className="text-center">
                               <div className="mt-4 flex text-sm leading-6 text-gray-600">
@@ -77,9 +121,11 @@ const ModalEventos: React.FC<IProps> = (
                                   <input
                                     id="file-upload"
                                     type="file"
+                                    multiple
+                                    accept="image/*"
                                     className="sr-only"
-                                    {...method.register('ImagenPortada')}
-                                    onChange={method.handlePreview}
+                                    {...method.register('Imagenes')}
+                                    onChange={method.handleFileChange}
                                   />
                                 </label>
                                 <p className="pl-1">o suelte acá la imagen</p>
@@ -203,6 +249,23 @@ const ModalEventos: React.FC<IProps> = (
                             Escriba la descripción del evento.
                           </p>
                         </div>
+
+                        <div className="col-span-full">
+                          <label
+                            htmlFor="about"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Categoría(s)
+                          </label>
+                          <div className="mt-2">
+                            <TagsInputComponent
+                              availableTags={method.tagsCategories}
+                              register={method.register}
+                              error={method.errors.Categories?.message}
+                            />
+                          </div>
+                        </div>
+
                         <div className="sm:col-span-2 sm:col-start-1">
                           <label
                             htmlFor="address"
